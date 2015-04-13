@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="danmaku.js"></script>
+    </head>
+    <body>
+        <div id="animation" style="width:640px;height:360px;background-color:black">&nbsp;</div>
+        <div>
+            <a id="play" href="javascript:;">></a>
+            &nbsp;
+            <a id="pause" href="javascript:;">||</a>
+            &nbsp;
+            <a id="stop" href="javascript:;">口</a>
+        </div>
+        <script>
+            var player = danmaku.attach(document.getElementById('animation'));
+            player.put('TEST', 0);
+            player.setTickRate(1000);
+            window.onload = function() {
+                document.getElementById('play').onclick = function() {
+                    player.play();
+                }
+                document.getElementById('pause').onclick = function() {
+                    player.pause();
+                }
+                document.getElementById('stop').onclick = function() {
+                    player.stop();
+                }
+            }
+        </script>
+    </body>
+</html>
