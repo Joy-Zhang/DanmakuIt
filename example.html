@@ -11,11 +11,13 @@
             <a id="pause" href="javascript:;">||</a>
             &nbsp;
             <a id="stop" href="javascript:;">口</a>
+            <input id="danmaku-text" />
+            <a id="go" href="javascript:;">GO</a>
         </div>
         <script>
             var player = danmaku.attach(document.getElementById('animation'));
-            player.put('TEST', 0);
-            player.setTickRate(1000);
+            //player.put('TEST', 0);
+            player.setTickRate(100);
             window.onload = function() {
                 document.getElementById('play').onclick = function() {
                     player.play();
@@ -25,6 +27,9 @@
                 }
                 document.getElementById('stop').onclick = function() {
                     player.stop();
+                }
+                document.getElementById('go').onclick = function() {
+                    player.put(document.getElementById('danmaku-text').value, player.getTick());                                    	
                 }
             }
         </script>

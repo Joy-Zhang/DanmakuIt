@@ -9,7 +9,7 @@
 
         var tick = 0;
 
-        var tickDelay = 33.333333;
+        var tickDelay = 33.33;
 
         var container = element;
 
@@ -17,6 +17,7 @@
             this.element = element;
             this.tick = tick;
             element.style.position = 'absolute';
+            //element.style.display = 'none';
             container.appendChild(element);
         }
 
@@ -25,7 +26,21 @@
                 for(var i in danmakuPool) {
                     var danmaku = danmakuPool[i];
                     var left = container.offsetLeft + container.offsetWidth - (tick - danmaku.tick);
+                    
+                    var top = container.offsetTop;
+                    for(var j in danmakuPool) {
+                        if(danmaku === danmakuPool[j])
+                            break;
+                        var tickRight = danmakuPool[j].tick + danmakuPool[j].element.offsetWidth;
+                        if(danmaku.tick < tickRight) {
+                            if(top + danmaku.element.offsetHeight > danmakuPool[j].element.offsetTop) {
+                                top = danmakuPool[j].element.offsetTop + danmakuPool[j].element.offsetHeight;
+                            }
+                        }
+                    }                    
+                    
                     danmaku.element.style.left = left + 'px';
+                    danmaku.element.style.top = top + 'px';
                 }
                 tick++;
             }
@@ -41,21 +56,33 @@
             tick = 0;
         }
 
-        this.goToTick = function(tickTo) {
+        this.setTick = function(tickTo) {
             tick = tickTo;
         }
-
+        
+        this.getTick = function () {
+            return tick;
+        }
+        
         this.setTickRate = function(tps) {
             tickDelay = 1000 / tps;
         }
 
         var putElement = function(danmakuElement, tick) {
-            danmakuPool.push(new Danmaku(danmakuElement, tick));
+            var insertPos = danmakuPool.length;
+            for(var i in danmakuPool) {
+                if(danmakuPool[i].tick > tick) {
+                    insertPos = i;
+                    break;
+                }
+            }
+            danmakuPool.splice(insertPos, 0, new Danmaku(danmakuElement, tick));
         }
 
         var putText = function(danmakuText, tick) {
             var element = document.createElement('span');
             element.textContent = danmakuText;
+            element.style.whiteSpace = 'nowrap';
             putElement(element, tick);
         }
 
