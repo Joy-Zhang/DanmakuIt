@@ -21,26 +21,37 @@
             container.appendChild(element);
         }
 
+        var Rect = function(danmaku, container, tick) {
+            this.left = container.offsetLeft + container.offsetWidth - (tick - danmaku.tick);
+            this.top = danmaku.element.offsetTop;
+            this.right = this.left + danmaku.element.offsetWidth;
+            this.bottom = danmaku.element.offsetTop + danmaku.element.offsetHeight;
+        }
+
+        var conflict = function(rect, rectToCompare) {
+            return rect.left < rectToCompare.right &&
+                    rect.top < rectToCompare.bottom &&
+                    rect.bottom > rectToCompare.top;
+        }
+
         this.play = function() {
             var render = function () {
                 for(var i in danmakuPool) {
                     var danmaku = danmakuPool[i];
-                    var left = container.offsetLeft + container.offsetWidth - (tick - danmaku.tick);
                     
-                    var top = container.offsetTop;
-                    for(var j in danmakuPool) {
+                    var danmakuRect = new Rect(danmaku, container, tick);
+                    for(var j = 0; j < danmakuPool.length; j++) {
                         if(danmaku === danmakuPool[j])
                             break;
-                        var tickRight = danmakuPool[j].tick + danmakuPool[j].element.offsetWidth;
-                        if(danmaku.tick < tickRight) {
-                            if(top + danmaku.element.offsetHeight > danmakuPool[j].element.offsetTop) {
-                                top = danmakuPool[j].element.offsetTop + danmakuPool[j].element.offsetHeight;
-                            }
+                        var rectToCompare = new Rect(danmakuPool[j], container, tick);
+                        if(conflict(danmakuRect, rectToCompare)) {
+                            danmakuRect.top = rectToCompare.bottom;
+                            j = -1;
                         }
-                    }                    
+                    }
                     
-                    danmaku.element.style.left = left + 'px';
-                    danmaku.element.style.top = top + 'px';
+                    danmaku.element.style.left = danmakuRect.left + 'px';
+                    danmaku.element.style.top = danmakuRect.top + 'px';
                 }
                 tick++;
             }

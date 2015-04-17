@@ -16,7 +16,10 @@
         </div>
         <script>
             var player = danmaku.attach(document.getElementById('animation'));
-            //player.put('TEST', 0);
+            player.put('TEST A BIG BLOCK', 0);
+            player.put('TEST A BIG BLOCK', 110);
+            player.put('TEST A BIG BLOCK', 140);
+            player.put('TEST A BIG BLOCK', 150);
             player.setTickRate(100);
             window.onload = function() {
                 document.getElementById('play').onclick = function() {
