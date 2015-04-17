@@ -1,19 +1,51 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- 新 Bootstrap 核心 CSS 文件 -->
+        <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+        <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script src="danmaku.js"></script>
     </head>
     <body>
-        <div id="animation" style="width:640px;height:360px;background-color:black">&nbsp;</div>
-        <div>
-            <a id="play" href="javascript:;">></a>
-            &nbsp;
-            <a id="pause" href="javascript:;">||</a>
-            &nbsp;
-            <a id="stop" href="javascript:;">口</a>
-            <input id="danmaku-text" />
-            <a id="go" href="javascript:;">GO</a>
+        <div class="container">
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Player</div>
+                        <div class="panel-body">
+                            <div id="animation" style="height:360px;background-color:black">&nbsp;</div>
+                            <div id="animation">&nbsp;</div>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button id="play" class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-play"></span>
+                                    </button>
+                                    <button id="pause" class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-pause"></span>
+                                    </button>
+                                    <button id="stop" class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-stop"></span>
+                                    </button>
+                                </span>
+                                <input class="form-control" id="danmaku-text" />
+                                <span class="input-group-btn">
+                                    <button id="go" class="btn btn-default" type="button">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <script>
             var player = danmaku.attach(document.getElementById('animation'));
             player.put('TEST A BIG BLOCK', 0);
