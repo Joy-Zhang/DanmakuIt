@@ -5,7 +5,7 @@
 
         var danmakuPool = [];
 
-        var interval = null;
+        var timer = null;
 
         var tick = 0;
 
@@ -34,36 +34,42 @@
                     rect.bottom > rectToCompare.top;
         }
 
-        this.play = function() {
-            var render = function () {
-                for(var i in danmakuPool) {
-                    var danmaku = danmakuPool[i];
-                    
-                    var danmakuRect = new Rect(danmaku, container, tick);
-                    for(var j = 0; j < danmakuPool.length; j++) {
-                        if(danmaku === danmakuPool[j])
-                            break;
-                        var rectToCompare = new Rect(danmakuPool[j], container, tick);
-                        if(conflict(danmakuRect, rectToCompare)) {
-                            danmakuRect.top = rectToCompare.bottom;
-                            j = -1;
-                        }
+        var render = function () {
+            for(var i in danmakuPool) {
+                var danmaku = danmakuPool[i];
+
+                var danmakuRect = new Rect(danmaku, container, tick);
+                for(var j = 0; j < danmakuPool.length; j++) {
+                    if(danmaku === danmakuPool[j])
+                        break;
+                    var rectToCompare = new Rect(danmakuPool[j], container, tick);
+                    if(conflict(danmakuRect, rectToCompare)) {
+                        danmakuRect.top = rectToCompare.bottom;
+                        j = -1;
                     }
-                    
-                    danmaku.element.style.left = danmakuRect.left + 'px';
-                    danmaku.element.style.top = danmakuRect.top + 'px';
                 }
-                tick++;
+
+                danmaku.element.style.left = danmakuRect.left + 'px';
+                danmaku.element.style.top = danmakuRect.top + 'px';
             }
-            interval = setInterval(render, tickDelay);
+            tick++;
+        }
+
+        this.play = function() {
+            if(timer === null)
+                timer = setInterval(render, tickDelay);
         }
 
         this.pause = function() {
-            clearInterval(interval);
+            if(timer !== null)
+                clearInterval(timer);
+            timer = null;
         }
 
         this.stop = function() {
-            clearInterval(interval);
+            if(timer !== null)
+                clearInterval(timer);
+            timer = null;
             tick = 0;
         }
 
@@ -94,6 +100,7 @@
             var element = document.createElement('span');
             element.textContent = danmakuText;
             element.style.whiteSpace = 'nowrap';
+            element.style.color = 'white';
             putElement(element, tick);
         }
 
@@ -114,7 +121,6 @@
         container.style.left = element.offsetLeft + 'px';
         container.style.width = element.offsetWidth + 'px';
         container.style.height = element.offsetHeight + 'px';
-        container.style.color = 'white';
         container.id = 'danmaku';
         element.parentNode.appendChild(container);
         return new DanmakuPlayer(container);
