@@ -76,11 +76,11 @@
         this.setTick = function(tickTo) {
             tick = tickTo;
         }
-        
+
         this.getTick = function () {
             return tick;
         }
-        
+
         this.setTickRate = function(tps) {
             tickDelay = 1000 / tps;
         }
@@ -121,6 +121,7 @@
         container.style.left = element.offsetLeft + 'px';
         container.style.width = element.offsetWidth + 'px';
         container.style.height = element.offsetHeight + 'px';
+        container.style.overflow = 'hidden';
         container.id = 'danmaku';
         element.parentNode.appendChild(container);
         return new DanmakuPlayer(container);
